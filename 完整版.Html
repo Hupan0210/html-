@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>南来北往USDT兑换服务</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+            background-image: url('https://pic.3gbizhi.com/uploads/20240912/a88d2eb3214c8e5d54f5cdd8843c0a05.jpg');
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+            flex-direction: column;
+            transition: background-color 0.2s ease;
+        }
+
+        /* 左上角和右上角的USDT发光文字 */
+        .usdt-top, .usdt-top-right {
+            position: absolute;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        /* 左上角的USDT文字 */
+        .usdt-top {
+            top: 20px;
+            left: 20px;
+        }
+
+        /* 右上角的USDT文字 */
+        .usdt-top-right {
+            top: 20px;
+            right: 20px;
+        }
+
+        .usdt-top:hover, .usdt-top-right:hover {
+            color: #FF6347;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-top: 0;
+            color: #666;
+        }
+
+        .contact a {
+            display: block;
+            font-size: 1.1em;
+            margin: 8px 0;
+            color: #0056b3;
+            text-decoration: none;
+        }
+
+        .btc-price {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #e67e22;
+        }
+
+        /* 下方访客信息样式 */
+        .visitor-info {
+            margin-top: 20px;
+            text-align: center;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .map-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 10px;
+            color: white;
+            background-color: #00aaff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .map-button:hover {
+            background-color: #0088cc;
+        }
+
+        /* 鼠标滑动五彩特效 */
+        body {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- 左上角的USDT文字 -->
+    <div class="usdt-top" onclick="window.location.href='https://nlbw.serv00.net/'">USDT</div>
+
+    <!-- 右上角的USDT文字 -->
+    <div class="usdt-top-right" onclick="window.location.href='https://zqq.serv00.net/'">USDT</div>
+
+    <div class="container">
+        <img src="https://pic.3gbizhi.com/uploads/20240307/27bf3d58c852c123716dc415390d819c.png" alt="头像" class="avatar">
+        <h1>南来北往</h1>
+        <p>USDT商家 | 提供数字货币交易服务</p>
+        
+        <div class="contact">
+            <a href="mailto:nlbwgzs@112583.com" target="_blank">电子邮件</a>
+            <a href="https://t.me/nlbwgzs" target="_blank">Telegram</a>
+        </div>
+
+        <div class="btc-price" id="btcPrice">BTC/USDT 价格加载中...</div>
+    </div>
+
+    <!-- 下方居中的访客信息 -->
+    <div class="visitor-info" id="visitorInfo">
+        访客IP及位置加载中...
+    </div>
+
+    <script>
+        // 实时获取BTC/USDT价格
+        async function fetchBTCPrice() {
+            try {
+                const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
+                const data = await response.json();
+                document.getElementById('btcPrice').textContent = `BTC/USDT 当前价格: $${parseFloat(data.price).toFixed(2)}`;
+            } catch (error) {
+                document.getElementById('btcPrice').textContent = '无法获取BTC价格';
+            }
+        }
+
+        // 每10秒更新价格
+        fetchBTCPrice();
+        setInterval(fetchBTCPrice, 10000);
+
+        // 获取访客IP地址和地理位置信息
+        async function fetchVisitorInfo() {
+            try {
+                const response = await fetch('https://ipinfo.io/json?token=9823bab95ac051'); // 替换为您在ipinfo.io注册的token
+                const data = await response.json();
+                const { ip, country, loc } = data;
+                const [latitude, longitude] = loc.split(',');
+
+                document.getElementById('visitorInfo').innerHTML = `
+                    您的IP地址: ${ip}<br>所在国家: ${country}<br>
+                    <a href="https://www.google.com/maps?q=${latitude},${longitude}" target="_blank" class="map-button">查看Google地图</a>
+                `;
+            } catch (error) {
+                document.getElementById('visitorInfo').textContent = '无法加载访客信息';
+            }
+        }
+
+        fetchVisitorInfo();
+
+        // 鼠标滑动五彩特效
+        document.body.addEventListener('mousemove', function(e) {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            // 动态调整背景色变化
+            document.body.style.backgroundColor = `rgb(${mouseX % 255}, ${mouseY % 255}, ${(mouseX + mouseY) % 255})`;
+        });
+    </script>
+</body>
+</html>
